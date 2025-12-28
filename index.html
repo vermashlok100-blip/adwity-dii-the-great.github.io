@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Info UI</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .date {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .time {
+            margin-top: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #4a00e0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="name" id="name">Adwity</div>
+        <div class="date" id="date"></div>
+        <div class="time" id="time"></div>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+
+            document.getElementById("date").innerText =
+                now.toDateString();
+
+            document.getElementById("time").innerText =
+                now.toLocaleTimeString();
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+
+</body>
+</html>
