@@ -74,13 +74,18 @@ button {
   to { transform: scale(1.4); }
 }
 
-#character {
+  #character {
   display: none;
-  width: 160px;
-  margin-top: 20px;
-  transform: translateX(-200px);
-  transition: transform 1s ease;
+  width: 150px;
+  position: absolute;
+  left: 50%;
+  top: 260px;              /* aligns with cake height */
+  transform: translate(-380px, 0); /* start far left */
+  transition: transform 1.2s ease;
+  z-index: 5;
 }
+
+
 
 #banner {
   display: none;
@@ -103,7 +108,8 @@ button {
 
 <div id="countdown"></div>
 
-<div id="cakeSection">
+<div id="cakeSection" style="position: relative; height: 420px;">
+
   <div class="cake">
     <div class="cake-body"></div>
 
@@ -156,20 +162,28 @@ function startCountdown() {
 }
 
 function blowCandles() {
-  document.querySelectorAll(".flame").forEach(f => {
-    f.style.opacity = "0";
-    f.style.transform = "scale(0.2)";
-  });
-
   const char = document.getElementById("character");
   char.style.display = "block";
-  char.offsetHeight;
-  char.style.transform = "translateX(0)";
 
-  document.getElementById("banner").style.display = "block";
-  document.getElementById("song").play();
+  /* character walks towards cake */
+  char.offsetHeight; // force animation
+  char.style.transform = "translate(-140px, 0)";
+
+
+  /* after reaching cake, blow candles */
+  setTimeout(() => {
+    document.querySelectorAll(".flame").forEach(f => {
+      f.style.opacity = "0";
+      f.style.transform = "scale(0.2)";
+    });
+
+    document.getElementById("banner").style.display = "block";
+    document.getElementById("song").play();
+  }, 1300);
 }
+
 </script>
 
 </body>
 </html>
+
