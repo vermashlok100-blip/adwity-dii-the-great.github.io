@@ -74,16 +74,16 @@ button {
   to { transform: scale(1.4); }
 }
 
-  #character {
+#character {
   display: none;
-  width: 150px;
+  width: 140px;
   position: absolute;
-  left: 50%;
-  top: 260px;              /* aligns with cake height */
-  transform: translate(-380px, 0); /* start far left */
-  transition: transform 1.2s ease;
+  left: -160px;     /* start outside cake area */
+  top: 40px;        /* align with cake height */
+  transition: left 1.2s ease;
   z-index: 5;
 }
+
 
 
 
@@ -110,21 +110,27 @@ button {
 
 <div id="cakeSection" style="position: relative; height: 420px;">
 
-  <div class="cake">
-    <div class="cake-body"></div>
+  <div id="stage" style="position: relative; width: 220px; margin: auto; height: 220px;">
 
-    <div class="candle" style="left:40px"><div class="flame"></div></div>
-    <div class="candle" style="left:80px"><div class="flame"></div></div>
-    <div class="candle" style="left:120px"><div class="flame"></div></div>
-    <div class="candle" style="left:160px"><div class="flame"></div></div>
+    <div class="cake">
+      <div class="cake-body"></div>
+
+      <div class="candle" style="left:40px"><div class="flame"></div></div>
+      <div class="candle" style="left:80px"><div class="flame"></div></div>
+      <div class="candle" style="left:120px"><div class="flame"></div></div>
+      <div class="candle" style="left:160px"><div class="flame"></div></div>
+    </div>
+
+    <!-- CHARACTER MOVES INSIDE STAGE -->
+    <img id="character" src="character.png" alt="character">
+
   </div>
 
   <br>
   <button onclick="blowCandles()">Blow Candles 💨</button>
 
-  <br><br>
-  <img id="character" src="character.png" alt="character">
 </div>
+
 
 <div id="banner">🎉 HAPPY BIRTHDAY adwity 🎉</div>
 
@@ -167,7 +173,8 @@ function blowCandles() {
 
   /* character walks towards cake */
   char.offsetHeight; // force animation
-  char.style.transform = "translate(-140px, 0)";
+  char.style.left = "-20px";
+
 
 
   /* after reaching cake, blow candles */
@@ -186,4 +193,5 @@ function blowCandles() {
 
 </body>
 </html>
+
 
