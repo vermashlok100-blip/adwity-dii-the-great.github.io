@@ -1,73 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>User Info UI</title>
+  <title>Happy Birthday</title>
+  <style>
+    body {
+      background: #1e1e2f;
+      color: white;
+      text-align: center;
+      font-family: Arial;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
-            font-family: Arial, sans-serif;
-        }
+    .cake {
+      margin-top: 40px;
+      position: relative;
+    }
 
-        .card {
-            background: white;
-            padding: 60px 50px;
-            border-radius: 30px;
-            text-align: center;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.2);
-        }
+    .cake-body {
+      width: 200px;
+      height: 100px;
+      background: pink;
+      margin: auto;
+      border-radius: 10px;
+    }
 
-        .name {
-            font-size: 58px;
-            font-weight: bold;
-            color: #433;
-        }
+    .candle {
+      width: 10px;
+      height: 30px;
+      background: white;
+      position: absolute;
+      top: -30px;
+    }
 
-        .date {
-            margin-top: 30px;
-            font-size: 58px;
-            color: #666;
-        }
+    .flame {
+      width: 10px;
+      height: 10px;
+      background: orange;
+      border-radius: 50%;
+      animation: flicker 0.3s infinite alternate;
+    }
 
-        .time {
-            margin-top: 65px;
-            font-size: 82px;
-            font-weight: bold;
-            color: #4a00e0;
-        }
-    </style>
+    @keyframes flicker {
+      from { transform: scale(1); }
+      to { transform: scale(1.3); }
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="card">
-        <div class="name" id="name">PANKHURI</div>
-        <div class="date" id="date"></div>
-        <div class="time" id="time"></div>
-    </div>
+<h1>🎂 Happy Birthday Adwity 🎂</h1>
+<p id="clock"></p>
 
-    <script>
-        function updateDateTime() {
-            const now = new Date();
+<div class="cake">
+  <div class="cake-body"></div>
 
-            document.getElementById("date").innerText =
-                now.toDateString();
+  <div class="candle" style="left:90px">
+    <div class="flame"></div>
+  </div>
 
-            document.getElementById("time").innerText =
-                now.toLocaleTimeString();
-        }
+  <div class="candle" style="left:120px">
+    <div class="flame"></div>
+  </div>
 
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-    </script>
+  <div class="candle" style="left:150px">
+    <div class="flame"></div>
+  </div>
+</div>
+
+<script>
+setInterval(() => {
+  document.getElementById("clock").innerHTML =
+    new Date().toLocaleString();
+}, 1000);
+</script>
 
 </body>
 </html>
+
+
 
 
