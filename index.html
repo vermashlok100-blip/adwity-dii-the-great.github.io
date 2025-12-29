@@ -12,10 +12,12 @@ body {
   text-align: center;
 }
 
+/* Headings */
 h1 {
   color: #6b003e;
 }
 
+/* Inputs & buttons */
 input, button {
   padding: 10px;
   font-size: 16px;
@@ -29,169 +31,18 @@ button {
   cursor: pointer;
 }
 
+/* Countdown */
 #countdown {
   font-size: 28px;
   margin-top: 20px;
 }
 
+/* Cake section */
 #cakeSection {
   display: none;
-  margin-top: 40px;
-}
-
-.cake {
   position: relative;
-  width: 220px;
-  margin: auto;
-}
-
-.cake-body {
-  width: 220px;
-  height: 120px;
-  background: #5c2c06;
-  border-radius: 12px;
-}
-
-.candle {
-  width: 10px;
-  height: 35px;
-  background: white;
-  position: absolute;
-  top: -35px;
-}
-
-.flame {
-  width: 10px;
-  height: 10px;
-  background: orange;
-  border-radius: 50%;
-  animation: flicker 0.3s infinite alternate;
-  transition: opacity 0.6s, transform 0.6s;
-}
-
-@keyframes flicker {
-  from { transform: scale(1); }
-  to { transform: scale(1.4); }
-}
-
-#character {
-  display: none;
-  width: 140px;
-  position: absolute;
-  left: -160px;     /* start outside cake area */
-  top: 40px;        /* align with cake height */
-  transition: left 1.2s ease;
-  z-index: 5;
-}
-
-
-
-
-#banner {
-  display: none;
-  font-size: 36px;
+  height: 420px;
   margin-top: 30px;
-  color: #d1006c;
 }
 
-</style>
-</head>
-
-<body>
-
-<h1>🎀 Birthday Countdown 🎀</h1>
-
-<p>Select your birthday:</p>
-<input type="datetime-local" id="bday">
-<br><br>
-<button onclick="startCountdown()">Start Countdown</button>
-
-<div id="countdown"></div>
-
-<div id="cakeSection" style="position: relative; height: 420px;">
-
-  <div id="stage" style="position: relative; width: 220px; margin: auto; height: 220px;">
-
-    <div class="cake">
-      <div class="cake-body"></div>
-
-      <div class="candle" style="left:40px"><div class="flame"></div></div>
-      <div class="candle" style="left:80px"><div class="flame"></div></div>
-      <div class="candle" style="left:120px"><div class="flame"></div></div>
-      <div class="candle" style="left:160px"><div class="flame"></div></div>
-    </div>
-
-    <!-- CHARACTER MOVES INSIDE STAGE -->
-    <img id="character" src="character.png" alt="character">
-
-  </div>
-
-  <br>
-  <button onclick="blowCandles()">Blow Candles 💨</button>
-
-</div>
-
-
-<div id="banner">🎉 HAPPY BIRTHDAY adwity 🎉</div>
-
-<audio id="song" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-let timer;
-
-function startCountdown() {
-  const target = new Date(document.getElementById("bday").value).getTime();
-  if (!target) {
-    alert("Please select date & time");
-    return;
-  }
-
-  timer = setInterval(() => {
-    const now = new Date().getTime();
-    const diff = target - now;
-
-    if (diff <= 0) {
-      clearInterval(timer);
-      document.getElementById("countdown").innerHTML = "🎂 IT'S TIME! 🎂";
-      document.getElementById("cakeSection").style.display = "block";
-    } else {
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const m = Math.floor((diff / (1000 * 60)) % 60);
-      const s = Math.floor((diff / 1000) % 60);
-      document.getElementById("countdown").innerHTML =
-        `${d}d ${h}h ${m}m ${s}s`;
-    }
-  }, 1000);
-}
-
-function blowCandles() {
-  const char = document.getElementById("character");
-  char.style.display = "block";
-
-  /* character walks towards cake */
-  char.offsetHeight; // force animation
-  char.style.left = "-20px";
-
-
-
-  /* after reaching cake, blow candles */
-  setTimeout(() => {
-    document.querySelectorAll(".flame").forEach(f => {
-      f.style.opacity = "0";
-      f.style.transform = "scale(0.2)";
-    });
-
-    document.getElementById("banner").style.display = "block";
-    document.getElementById("song").play();
-  }, 1300);
-}
-
-</script>
-
-</body>
-</html>
-
-
+/
