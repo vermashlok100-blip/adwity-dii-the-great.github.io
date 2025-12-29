@@ -8,12 +8,11 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #ffd6e8; /* light pink */
+  background: #ffd6e8;
   text-align: center;
-  overflow-x: hidden;
 }
 
-h1, h2 {
+h1 {
   color: #6b003e;
 }
 
@@ -49,7 +48,7 @@ button {
 .cake-body {
   width: 220px;
   height: 120px;
-  background: #5c2c06; /* chocolate */
+  background: #5c2c06;
   border-radius: 12px;
 }
 
@@ -77,9 +76,10 @@ button {
 
 #character {
   display: none;
-  width: 140px;
+  width: 160px;
   margin-top: 20px;
-  transition: transform 0.8s;
+  transform: translateX(-200px);
+  transition: transform 1s ease;
 }
 
 #banner {
@@ -87,13 +87,8 @@ button {
   font-size: 36px;
   margin-top: 30px;
   color: #d1006c;
-  animation: pop 1s ease;
 }
 
-@keyframes pop {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
-}
 </style>
 </head>
 
@@ -108,13 +103,10 @@ button {
 
 <div id="countdown"></div>
 
-<!-- CAKE SECTION -->
 <div id="cakeSection">
-
   <div class="cake">
     <div class="cake-body"></div>
 
-    <!-- Candles -->
     <div class="candle" style="left:40px"><div class="flame"></div></div>
     <div class="candle" style="left:80px"><div class="flame"></div></div>
     <div class="candle" style="left:120px"><div class="flame"></div></div>
@@ -125,10 +117,7 @@ button {
   <button onclick="blowCandles()">Blow Candles 💨</button>
 
   <br><br>
-  <img id="character"
-       src="https://i.imgur.com/4AiXzf8.png"
-       alt="character">
-
+  <img id="character" src="character.png" alt="character">
 </div>
 
 <div id="banner">🎉 HAPPY BIRTHDAY adwity 🎉</div>
@@ -142,7 +131,6 @@ let timer;
 
 function startCountdown() {
   const target = new Date(document.getElementById("bday").value).getTime();
-
   if (!target) {
     alert("Please select date & time");
     return;
@@ -161,7 +149,6 @@ function startCountdown() {
       const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const m = Math.floor((diff / (1000 * 60)) % 60);
       const s = Math.floor((diff / 1000) % 60);
-
       document.getElementById("countdown").innerHTML =
         `${d}d ${h}h ${m}m ${s}s`;
     }
@@ -176,7 +163,8 @@ function blowCandles() {
 
   const char = document.getElementById("character");
   char.style.display = "block";
-  char.style.transform = "translateX(40px)";
+  char.offsetHeight;
+  char.style.transform = "translateX(0)";
 
   document.getElementById("banner").style.display = "block";
   document.getElementById("song").play();
@@ -185,10 +173,3 @@ function blowCandles() {
 
 </body>
 </html>
-
-
-
-
-
-
-
