@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Birthday Surprise 🎉</title>
+<title>Happy Birthday Palak 🎉</title>
 
 <style>
 body {
@@ -11,17 +11,6 @@ body {
   background: #ffd6e8;
   text-align: center;
   overflow-x: hidden;
-}
-
-/* 🔊 Speaker Icon */
-#speaker {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  font-size: 28px;
-  cursor: pointer;
-  user-select: none;
-  color: red; /* OFF by default */
 }
 
 /* 🎉 Banner */
@@ -54,16 +43,11 @@ body {
   margin-top: 20px;
 }
 
-/* Cake section */
-#cakeSection {
-  display: none;
-  margin-top: 30px;
-}
-
+/* Cake */
 .cake {
   position: relative;
   width: 220px;
-  margin: auto;
+  margin: 30px auto;
 }
 
 .cake-body {
@@ -73,7 +57,6 @@ body {
   border-radius: 12px;
 }
 
-/* Candles */
 .candle {
   width: 10px;
   height: 35px;
@@ -118,28 +101,31 @@ button {
   background: #ff5fa2;
   color: white;
   cursor: pointer;
-  margin-top: 15px;
+}
+
+/* Audio player (small, corner) */
+#audioBox {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔊 Speaker -->
-<div id="speaker" onclick="toggleSound()">🔊</div>
-
 <h1>🎀 Birthday Countdown 🎀</h1>
 
 <p>Select your birthday:</p>
 <input type="datetime-local" id="bday">
-<br>
+<br><br>
 <button onclick="startCountdown()">Start Countdown</button>
 
 <div id="countdown"></div>
 
-<div id="cakeSection">
-  <div id="banner">🎉🎊 HAPPY BIRTHDAY PALAK 🎊🎉</div>
+<div id="banner">🎉🎊 HAPPY BIRTHDAY PALAK 🎊🎉</div>
 
+<div id="cakeSection" style="display:none;">
   <div class="cake">
     <div class="cake-body"></div>
     <div class="candle" style="left:40px"><div class="flame"></div></div>
@@ -151,31 +137,15 @@ button {
   <button onclick="blowCandles()">Blow Candles 💨</button>
 </div>
 
-<audio id="song" preload="auto">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
-</audio>
+<!-- 🔊 NATIVE AUDIO CONTROLS (GUARANTEED) -->
+<div id="audioBox">
+  <audio id="song" controls>
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
 <script>
-let soundOn = false;
 let timer;
-
-function toggleSound() {
-  soundOn = !soundOn;
-
-  const speaker = document.getElementById("speaker");
-  const song = document.getElementById("song");
-
-  /* VISUAL STATE FIRST (NO DEPENDENCY) */
-  speaker.style.color = soundOn ? "green" : "red";
-
-  /* TRY TO PLAY — IF BLOCKED, IGNORE */
-  if (soundOn) {
-    song.currentTime = 0;
-    song.play().catch(() => {});
-  } else {
-    song.pause();
-  }
-}
 
 function startCountdown() {
   const input = document.getElementById("bday").value;
@@ -213,11 +183,9 @@ function blowCandles() {
   document.getElementById("banner").style.display = "block";
   startConfetti();
 
-  if (soundOn) {
-    const song = document.getElementById("song");
-    song.currentTime = 0;
-    song.play().catch(() => {});
-  }
+  const song = document.getElementById("song");
+  song.currentTime = 0;
+  song.play(); // ALWAYS WORKS after user pressed play once
 }
 </script>
 
