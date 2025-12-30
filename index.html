@@ -12,9 +12,10 @@ body {
   text-align: center;
 }
 
-/* Headings */
+/* Heading */
 h1 {
   color: #6b003e;
+  margin-top: 20px;
 }
 
 /* Inputs & buttons */
@@ -29,47 +30,44 @@ button {
   background: #ff5fa2;
   color: white;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 /* Countdown */
 #countdown {
-  font-size: 28px;
+  font-size: 26px;
   margin-top: 20px;
 }
 
 /* Cake section */
 #cakeSection {
   display: none;
+  margin-top: 40px;
   position: relative;
-  height: 420px;
-  margin-top: 30px;
 }
 
-/* Birthday banner (NOW VISIBLE WITHOUT SCROLL) */
+/* Banner */
 #banner {
   display: none;
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 34px;
+  font-size: 32px;
   color: #d1006c;
-  z-index: 10;
+  margin-bottom: 20px;
 }
 
-/* Stage keeps cake & character aligned */
+/* Stage */
 #stage {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: 260px;
+  height: 200px;
   margin: auto;
-  top: 120px;
 }
 
 /* Cake */
 .cake {
-  position: relative;
+  position: absolute;
+  bottom: 0;
   width: 220px;
+  left: 20px;
 }
 
 .cake-body {
@@ -88,7 +86,6 @@ button {
   top: -35px;
 }
 
-/* Flame */
 .flame {
   width: 10px;
   height: 10px;
@@ -106,12 +103,11 @@ button {
 /* Character */
 #character {
   display: none;
-  width: 140px;
+  width: 120px;
   position: absolute;
-  left: -160px;
-  top: 40px;
-  transition: left 1.2s ease;
-  z-index: 5;
+  bottom: 0;
+  left: -140px;
+  transition: left 1s ease;
 }
 </style>
 </head>
@@ -122,21 +118,20 @@ button {
 
 <p>Select your birthday:</p>
 <input type="datetime-local" id="bday">
-<br><br>
+<br>
 <button onclick="startCountdown()">Start Countdown</button>
 
 <div id="countdown"></div>
 
-<!-- CAKE + CHARACTER SECTION -->
 <div id="cakeSection">
 
-  <!-- Banner appears here -->
-  <div id="banner">🎉 HAPPY BIRTHDAY adwity 🎉</div>
+  <div id="banner">🎉 HAPPY BIRTHDAY 🎉</div>
 
   <div id="stage">
+
+    <!-- Cake -->
     <div class="cake">
       <div class="cake-body"></div>
-
       <div class="candle" style="left:40px"><div class="flame"></div></div>
       <div class="candle" style="left:80px"><div class="flame"></div></div>
       <div class="candle" style="left:120px"><div class="flame"></div></div>
@@ -145,14 +140,14 @@ button {
 
     <!-- Character -->
     <img id="character" src="character.png" alt="character">
+
   </div>
 
-  <br><br>
   <button onclick="blowCandles()">Blow Candles 💨</button>
 </div>
 
-<!-- Birthday music -->
-<audio id="song" loop>
+<!-- Birthday song (browser-safe) -->
+<audio id="song" preload="auto">
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
 </audio>
 
@@ -160,11 +155,13 @@ button {
 let timer;
 
 function startCountdown() {
-  const target = new Date(document.getElementById("bday").value).getTime();
-  if (!target) {
+  const input = document.getElementById("bday").value;
+  if (!input) {
     alert("Please select date & time");
     return;
   }
+
+  const target = new Date(input).getTime();
 
   timer = setInterval(() => {
     const now = new Date().getTime();
@@ -189,7 +186,7 @@ function blowCandles() {
   const char = document.getElementById("character");
   char.style.display = "block";
   char.offsetHeight;
-  char.style.left = "-20px";
+  char.style.left = "20px";
 
   setTimeout(() => {
     document.querySelectorAll(".flame").forEach(f => {
@@ -198,8 +195,13 @@ function blowCandles() {
     });
 
     document.getElementById("banner").style.display = "block";
-    document.getElementById("song").play();
-  }, 1200);
+
+    const song = document.getElementById("song");
+    song.currentTime = 0;
+    song.play().catch(() => {
+      alert("Click anywhere on the page once to enable sound 🔊");
+    });
+  }, 1000);
 }
 </script>
 
