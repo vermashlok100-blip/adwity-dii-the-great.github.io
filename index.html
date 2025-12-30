@@ -55,7 +55,6 @@ body {
   border-radius: 12px;
 }
 
-/* Cake flavors */
 .chocolate { background: #5c2c06; }
 .strawberry { background: #ff7aa2; }
 .vanilla { background: #ffe4b5; }
@@ -97,7 +96,7 @@ body {
 /* 🎈 Balloons */
 .balloon {
   position: fixed;
-  bottom: -80px;
+  bottom: -90px;
   width: 40px;
   height: 55px;
   border-radius: 50%;
@@ -116,7 +115,7 @@ body {
 
 @keyframes floatUp {
   to {
-    transform: translateY(-130vh);
+    transform: translateY(-140vh);
     opacity: 0;
   }
 }
@@ -178,7 +177,6 @@ button {
   <button onclick="blowCandles()">Blow Candles 💨</button>
 </div>
 
-<!-- Audio -->
 <div id="audioBox">
   <audio id="song" controls preload="metadata">
     <source src="Birthday.mp3" type="audio/mpeg">
@@ -224,7 +222,7 @@ function fireworks() {
   }
 }
 
-/* 🎈 Balloons with flavor-based colors */
+/* 🎈 MULTI-ROW BALLOONS */
 function startBalloons() {
   let colors = [];
 
@@ -236,14 +234,22 @@ function startBalloons() {
     colors = ["#ffffff", "#fff5cc", "#f5f5f5"];
   }
 
-  for (let i = 0; i < 40; i++) {
-    const b = document.createElement("div");
-    b.className = "balloon";
-    b.style.left = Math.random() * 100 + "vw";
-    b.style.background = colors[Math.floor(Math.random() * colors.length)];
-    b.style.animationDuration = (6 + Math.random() * 5) + "s";
-    document.body.appendChild(b);
-    setTimeout(() => b.remove(), 12000);
+  const rows = 4;              // number of rows
+  const balloonsPerRow = 12;   // balloons per row
+  const screenWidth = window.innerWidth;
+
+  for (let row = 0; row < rows; row++) {
+    setTimeout(() => {
+      for (let i = 0; i < balloonsPerRow; i++) {
+        const b = document.createElement("div");
+        b.className = "balloon";
+        b.style.left = (i / balloonsPerRow) * screenWidth + "px";
+        b.style.background = colors[Math.floor(Math.random() * colors.length)];
+        b.style.animationDuration = (7 + Math.random() * 4) + "s";
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 14000);
+      }
+    }, row * 400); // delay between rows
   }
 }
 
