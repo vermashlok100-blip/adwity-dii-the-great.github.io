@@ -54,12 +54,13 @@ button {
   margin-bottom: 20px;
 }
 
-/* Stage */
+/* Stage (visual only, no clicks) */
 #stage {
   position: relative;
   width: 260px;
   height: 200px;
   margin: auto;
+  pointer-events: none; /* 👈 VERY IMPORTANT */
 }
 
 /* Cake */
@@ -109,6 +110,14 @@ button {
   left: -140px;
   transition: left 1s ease;
 }
+
+/* Blow button (FORCE CLICKABLE) */
+#blowBtn {
+  position: relative;
+  z-index: 50;
+  cursor: pointer;
+  pointer-events: auto;
+}
 </style>
 </head>
 
@@ -140,13 +149,13 @@ button {
 
     <!-- Character -->
     <img id="character" src="character.png" alt="character">
-
   </div>
 
-  <button onclick="blowCandles()">Blow Candles 💨</button>
+  <!-- CLICKABLE BUTTON -->
+  <button id="blowBtn" onclick="blowCandles()">Blow Candles 💨</button>
 </div>
 
-<!-- Birthday song (browser-safe) -->
+<!-- Birthday song -->
 <audio id="song" preload="auto">
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
 </audio>
@@ -199,7 +208,7 @@ function blowCandles() {
     const song = document.getElementById("song");
     song.currentTime = 0;
     song.play().catch(() => {
-      alert("Click anywhere on the page once to enable sound 🔊");
+      alert("Click once anywhere to enable sound 🔊");
     });
   }, 1000);
 }
