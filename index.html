@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy Birthday Palak 🎉</title>
+<title>Birthday Surprise 🎉</title>
 
 <style>
 body {
@@ -10,12 +10,43 @@ body {
   font-family: Arial, sans-serif;
   background: #ffd6e8;
   text-align: center;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-/* 🎉 Gradient + Sparkle Text */
+h1 {
+  color: #6b003e;
+  margin-top: 20px;
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background: #ff5fa2;
+  color: white;
+  cursor: pointer;
+  margin: 10px;
+}
+
+/* Countdown */
+#countdown {
+  font-size: 26px;
+  margin-top: 20px;
+}
+
+/* Cake section hidden initially */
+#cakeSection {
+  display: none;
+  margin-top: 30px;
+}
+
+/* 🎉 Banner (hidden until candles blown) */
 #banner {
-  margin-top: 40px;
+  display: none;
   font-size: 42px;
   font-weight: bold;
   background: linear-gradient(90deg, #ff0080, #ffcc00, #ff0080);
@@ -23,6 +54,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: gradientMove 3s linear infinite, sparkle 1.5s infinite;
+  margin-bottom: 20px;
 }
 
 @keyframes gradientMove {
@@ -36,14 +68,58 @@ body {
   100% { text-shadow: 0 0 5px #fff; }
 }
 
-/* 🎊 Confetti */
+/* Cake */
+.cake {
+  position: relative;
+  width: 220px;
+  margin: auto;
+}
+
+.cake-body {
+  width: 220px;
+  height: 120px;
+  background: #5c2c06;
+  border-radius: 12px;
+}
+
+/* Candles */
+.candle {
+  width: 10px;
+  height: 35px;
+  background: white;
+  position: absolute;
+  top: -35px;
+}
+
+.flame {
+  width: 10px;
+  height: 10px;
+  background: orange;
+  border-radius: 50%;
+  animation: flicker 0.3s infinite alternate;
+  transition: opacity 0.6s, transform 0.6s;
+}
+
+@keyframes flicker {
+  from { transform: scale(1); }
+  to { transform: scale(1.4); }
+}
+
+/* Character */
+#character {
+  display: none;
+  width: 120px;
+  margin-top: 10px;
+}
+
+/* Confetti */
 .confetti {
   position: fixed;
   width: 8px;
   height: 8px;
   top: -10px;
-  background: red;
   animation: fall linear forwards;
+  z-index: 999;
 }
 
 @keyframes fall {
@@ -51,79 +127,118 @@ body {
     transform: translateY(110vh) rotate(360deg);
   }
 }
-
-/* Buttons */
-button {
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  background: #ff5fa2;
-  color: white;
-  cursor: pointer;
-  margin-top: 25px;
-}
 </style>
 </head>
 
 <body>
 
-<div id="banner">🎉🎊 HAPPY BIRTHDAY PALAK 🎊🎉</div>
+<h1>🎀 Birthday Countdown 🎀</h1>
 
-<button id="soundBtn" onclick="enableSound()">Enable Sound 🔊</button>
+<p>Select your birthday:</p>
+<input type="datetime-local" id="bday">
 <br>
-<button onclick="blowCandles()">Blow Candles 💨</button>
+<button onclick="startCountdown()">Start Countdown</button>
+
+<div id="countdown"></div>
+
+<!-- SOUND UNLOCK -->
+<br>
+<button onclick="enableSound()">Enable Sound 🔊</button>
+
+<!-- CAKE SECTION -->
+<div id="cakeSection">
+
+  <div id="banner">🎉🎊 HAPPY BIRTHDAY PALAK 🎊🎉</div>
+
+  <div class="cake">
+    <div class="cake-body"></div>
+    <div class="candle" style="left:40px"><div class="flame"></div></div>
+    <div class="candle" style="left:80px"><div class="flame"></div></div>
+    <div class="candle" style="left:120px"><div class="flame"></div></div>
+    <div class="candle" style="left:160px"><div class="flame"></div></div>
+  </div>
+
+  <img id="character" src="character.png">
+
+  <br>
+  <button onclick="blowCandles()">Blow Candles 💨</button>
+</div>
 
 <audio id="song" preload="auto">
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+let timer;
 let soundEnabled = false;
 
-/* 🔊 PROPER AUDIO UNLOCK */
+/* Enable sound safely */
 function enableSound() {
   const song = document.getElementById("song");
-
-  // Trick browsers by muting first
   song.muted = true;
   song.play().then(() => {
     song.pause();
     song.currentTime = 0;
     song.muted = false;
-
     soundEnabled = true;
-    document.getElementById("soundBtn").innerText = "Sound Enabled ✅";
-
-    // Optional: play immediately
-    song.play();
-    startConfetti();
-  }).catch(() => {
-    alert("Tap the button once more 🔊");
+    alert("Sound enabled ✅");
   });
 }
 
-/* 🎊 Confetti Rain */
+/* Countdown */
+function startCountdown() {
+  const input = document.getElementById("bday").value;
+  if (!input) {
+    alert("Select date & time");
+    return;
+  }
+
+  const target = new Date(input).getTime();
+
+  timer = setInterval(() => {
+    const diff = target - Date.now();
+
+    if (diff <= 0) {
+      clearInterval(timer);
+      document.getElementById("countdown").innerHTML = "🎂 IT'S TIME! 🎂";
+      document.getElementById("cakeSection").style.display = "block";
+    } else {
+      document.getElementById("countdown").innerHTML =
+        Math.floor(diff / 1000) + " seconds";
+    }
+  }, 1000);
+}
+
+/* Confetti */
 function startConfetti() {
-  setInterval(() => {
+  for (let i = 0; i < 120; i++) {
     const c = document.createElement("div");
     c.className = "confetti";
     c.style.left = Math.random() * 100 + "vw";
     c.style.background = `hsl(${Math.random()*360},100%,50%)`;
-    c.style.animationDuration = (2 + Math.random()*3) + "s";
+    c.style.animationDuration = 2 + Math.random() * 3 + "s";
     document.body.appendChild(c);
     setTimeout(() => c.remove(), 5000);
-  }, 150);
+  }
 }
 
-/* 💨 Blow Candles (sound-safe) */
+/* Blow candles */
 function blowCandles() {
   if (!soundEnabled) {
-    alert("Please click Enable Sound 🔊 first");
+    alert("Enable sound first 🔊");
     return;
   }
 
+  document.querySelectorAll(".flame").forEach(f => {
+    f.style.opacity = "0";
+    f.style.transform = "scale(0.2)";
+  });
+
+  document.getElementById("banner").style.display = "block";
+  document.getElementById("character").style.display = "block";
+
   document.getElementById("song").play();
+  startConfetti();
 }
 </script>
 
