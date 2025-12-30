@@ -16,7 +16,7 @@ body {
 /* Banner */
 #banner {
   display: none;
-  font-size: 46px;
+  font-size: 48px;
   font-weight: bold;
   background: linear-gradient(90deg, #ff0080, #ff5fa2, #ff0080);
   background-size: 300%;
@@ -32,7 +32,7 @@ body {
 }
 @keyframes sparkle {
   0% { text-shadow: 0 0 5px #fff; }
-  50% { text-shadow: 0 0 40px hotpink; }
+  50% { text-shadow: 0 0 45px hotpink; }
   100% { text-shadow: 0 0 5px #fff; }
 }
 
@@ -75,12 +75,12 @@ body {
   to { transform: scale(1.4); }
 }
 
-/* 🎈 Balloons (reduced) */
+/* 🎈 Balloons (few) */
 .balloon {
   position: fixed;
   bottom: -90px;
-  width: 38px;
-  height: 52px;
+  width: 36px;
+  height: 50px;
   border-radius: 50%;
   animation: floatUp linear forwards;
   z-index: 300;
@@ -89,9 +89,9 @@ body {
   content: "";
   position: absolute;
   width: 2px;
-  height: 35px;
+  height: 32px;
   background: #555;
-  top: 52px;
+  top: 50px;
   left: 50%;
 }
 @keyframes floatUp {
@@ -105,7 +105,7 @@ body {
   width: 4px;
   height: 26px;
   background: white;
-  animation: launch 1.4s linear forwards;
+  animation: launch 1.5s linear forwards;
   z-index: 900;
 }
 @keyframes launch {
@@ -115,11 +115,11 @@ body {
 /* ❤️ Heart spark */
 .heart-spark {
   position: fixed;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   background: hotpink;
   border-radius: 50%;
-  animation: sparkFly 1.4s ease-out forwards;
+  animation: sparkFly 1.6s ease-out forwards;
   pointer-events: none;
 }
 @keyframes sparkFly {
@@ -204,10 +204,10 @@ function startCountdown() {
   }, 1000);
 }
 
-/* 🎈 Reduced balloons */
+/* 🎈 Few balloons */
 function startBalloons() {
   const colors = ["#ff1744","#ff69b4","#ffd700","#00bfff"];
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 10; i++) {
     const b = document.createElement("div");
     b.className = "balloon";
     b.style.left = Math.random() * 100 + "vw";
@@ -219,23 +219,22 @@ function startBalloons() {
 }
 
 /* 🚀 Launch rocket */
-function launchHeartFirework() {
+function launchHeartFirework(isFinal = false) {
   const rocket = document.createElement("div");
   rocket.className = "rocket";
-  rocket.style.left = Math.random() * 90 + 5 + "vw";
+  rocket.style.left = isFinal ? "50vw" : (Math.random() * 90 + 5) + "vw";
   document.body.appendChild(rocket);
 
   setTimeout(() => {
-    const r = rocket.getBoundingClientRect();
     rocket.remove();
 
-    if (rocketCount === 49) {
-      explodeMegaHeart(r.left, r.top);
+    if (isFinal) {
+      explodeFinalHeart();
     } else {
-      explodeHeart(r.left, r.top);
+      const y = window.innerHeight * 0.35;
+      explodeHeart(Math.random() * window.innerWidth, y);
     }
-    rocketCount++;
-  }, 1400);
+  }, 1500);
 }
 
 /* ❤️ Normal heart */
@@ -248,20 +247,23 @@ function explodeHeart(cx, cy) {
         2 * Math.cos(3 * t) -
         Math.cos(4 * t));
 
-    const spark = document.createElement("div");
-    spark.className = "heart-spark";
-    spark.style.left = cx + "px";
-    spark.style.top = cy + "px";
-    spark.style.setProperty("--x", x * 10 + "px");
-    spark.style.setProperty("--y", y * 10 + "px");
-    document.body.appendChild(spark);
-    setTimeout(() => spark.remove(), 1400);
+    const s = document.createElement("div");
+    s.className = "heart-spark";
+    s.style.left = cx + "px";
+    s.style.top = cy + "px";
+    s.style.setProperty("--x", x * 10 + "px");
+    s.style.setProperty("--y", y * 10 + "px");
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1600);
   }
 }
 
-/* ❤️💥 MEGA HEART (FULL SCREEN) */
-function explodeMegaHeart(cx, cy) {
-  for (let t = 0; t < Math.PI * 2; t += 0.12) {
+/* ❤️💥 FINAL HUGE HEART (CENTER, 3×) */
+function explodeFinalHeart() {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+
+  for (let t = 0; t < Math.PI * 2; t += 0.1) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y =
       -(13 * Math.cos(t) -
@@ -269,15 +271,15 @@ function explodeMegaHeart(cx, cy) {
         2 * Math.cos(3 * t) -
         Math.cos(4 * t));
 
-    const spark = document.createElement("div");
-    spark.className = "heart-spark";
-    spark.style.left = cx + "px";
-    spark.style.top = cy + "px";
-    spark.style.setProperty("--x", x * 22 + "px"); // HUGE
-    spark.style.setProperty("--y", y * 22 + "px"); // HUGE
-    spark.style.background = "deeppink";
-    document.body.appendChild(spark);
-    setTimeout(() => spark.remove(), 2000);
+    const s = document.createElement("div");
+    s.className = "heart-spark";
+    s.style.left = cx + "px";
+    s.style.top = cy + "px";
+    s.style.background = "deeppink";
+    s.style.setProperty("--x", x * 32 + "px");  // 3× BIGGER
+    s.style.setProperty("--y", y * 32 + "px");  // 3× BIGGER
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 2200);
   }
 }
 
@@ -288,10 +290,13 @@ function blowCandles() {
 
   startBalloons();
 
-  rocketCount = 0;
-  for (let i = 0; i < 50; i++) {
-    setTimeout(launchHeartFirework, i * 160);
+  // First 49 rockets
+  for (let i = 0; i < 49; i++) {
+    setTimeout(() => launchHeartFirework(false), i * 180);
   }
+
+  // Final mega rocket after balloons finish
+  setTimeout(() => launchHeartFirework(true), 49 * 180 + 2000);
 
   const song = document.getElementById("song");
   song.currentTime = 0;
