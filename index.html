@@ -116,7 +116,7 @@ body {
 
 @keyframes floatUp {
   to {
-    transform: translateY(-120vh);
+    transform: translateY(-130vh);
     opacity: 0;
   }
 }
@@ -187,13 +187,14 @@ button {
 
 <script>
 let timer;
+let selectedFlavor = "chocolate";
 
 function startCountdown() {
   const input = document.getElementById("bday").value;
   if (!input) return alert("Select date & time");
 
-  const flavor = document.getElementById("flavor").value;
-  document.getElementById("cakeBody").className = "cake-body " + flavor;
+  selectedFlavor = document.getElementById("flavor").value;
+  document.getElementById("cakeBody").className = "cake-body " + selectedFlavor;
 
   const target = new Date(input).getTime();
 
@@ -223,16 +224,26 @@ function fireworks() {
   }
 }
 
-/* 🎈 Balloons */
+/* 🎈 Balloons with flavor-based colors */
 function startBalloons() {
-  for (let i = 0; i < 15; i++) {
+  let colors = [];
+
+  if (selectedFlavor === "chocolate") {
+    colors = ["#4e2a06", "#6b3e1e", "#3b1f0e"];
+  } else if (selectedFlavor === "strawberry") {
+    colors = ["#ff5fa2", "#ff85b3", "#ffb3d1"];
+  } else {
+    colors = ["#ffffff", "#fff5cc", "#f5f5f5"];
+  }
+
+  for (let i = 0; i < 40; i++) {
     const b = document.createElement("div");
     b.className = "balloon";
     b.style.left = Math.random() * 100 + "vw";
-    b.style.background = `hsl(${Math.random()*360},80%,60%)`;
-    b.style.animationDuration = (6 + Math.random() * 4) + "s";
+    b.style.background = colors[Math.floor(Math.random() * colors.length)];
+    b.style.animationDuration = (6 + Math.random() * 5) + "s";
     document.body.appendChild(b);
-    setTimeout(() => b.remove(), 10000);
+    setTimeout(() => b.remove(), 12000);
   }
 }
 
