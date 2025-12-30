@@ -16,7 +16,7 @@ body {
 /* Banner */
 #banner {
   display: none;
-  font-size: 42px;
+  font-size: 44px;
   font-weight: bold;
   background: linear-gradient(90deg, #ff0080, #ff5fa2, #ff0080);
   background-size: 300%;
@@ -32,7 +32,7 @@ body {
 }
 @keyframes sparkle {
   0% { text-shadow: 0 0 5px #fff; }
-  50% { text-shadow: 0 0 30px hotpink; }
+  50% { text-shadow: 0 0 35px hotpink; }
   100% { text-shadow: 0 0 5px #fff; }
 }
 
@@ -94,15 +94,11 @@ body {
   top: 55px;
   left: 50%;
 }
-
 @keyframes floatUp {
-  to {
-    transform: translateY(-140vh);
-    opacity: 0;
-  }
+  to { transform: translateY(-140vh); opacity: 0; }
 }
 
-/* 🚀 Firework rocket */
+/* 🚀 Rocket */
 .rocket {
   position: fixed;
   bottom: -30px;
@@ -113,23 +109,19 @@ body {
   z-index: 900;
 }
 @keyframes launch {
-  to {
-    transform: translateY(-60vh);
-    opacity: 0;
-  }
+  to { transform: translateY(-60vh); opacity: 0; }
 }
 
-/* ❤️ Heart spark particles */
+/* ❤️ Heart spark */
 .heart-spark {
   position: fixed;
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   background: hotpink;
   border-radius: 50%;
-  animation: sparkFly 1s ease-out forwards;
+  animation: sparkFly 1.2s ease-out forwards;
   pointer-events: none;
 }
-
 @keyframes sparkFly {
   to {
     transform: translate(var(--x), var(--y)) scale(0);
@@ -211,43 +203,40 @@ function startCountdown() {
   }, 1000);
 }
 
-/* 🚀 Launch heart firework */
+/* 🚀 Launch ONE heart rocket */
 function launchHeartFirework() {
   const rocket = document.createElement("div");
   rocket.className = "rocket";
-  rocket.style.left = Math.random() * 80 + 10 + "vw";
+  rocket.style.left = Math.random() * 90 + 5 + "vw";
   document.body.appendChild(rocket);
 
   setTimeout(() => {
-    const rect = rocket.getBoundingClientRect();
+    const r = rocket.getBoundingClientRect();
     rocket.remove();
-    explodeHeart(rect.left, rect.top);
+    explodeHeart(r.left, r.top);
   }, 1300);
 }
 
-/* ❤️ Heart-shaped explosion */
+/* ❤️ BIG heart explosion */
 function explodeHeart(cx, cy) {
-  const points = [];
-  for (let t = 0; t < Math.PI * 2; t += 0.25) {
+  for (let t = 0; t < Math.PI * 2; t += 0.18) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y =
       -(13 * Math.cos(t) -
         5 * Math.cos(2 * t) -
         2 * Math.cos(3 * t) -
         Math.cos(4 * t));
-    points.push({ x: x * 6, y: y * 6 });
-  }
 
-  points.forEach(p => {
-    const s = document.createElement("div");
-    s.className = "heart-spark";
-    s.style.left = cx + "px";
-    s.style.top = cy + "px";
-    s.style.setProperty("--x", p.x + "px");
-    s.style.setProperty("--y", p.y + "px");
-    document.body.appendChild(s);
-    setTimeout(() => s.remove(), 1000);
-  });
+    const spark = document.createElement("div");
+    spark.className = "heart-spark";
+    spark.style.left = cx + "px";
+    spark.style.top = cy + "px";
+    spark.style.setProperty("--x", x * 10 + "px");  // BIGGER
+    spark.style.setProperty("--y", y * 10 + "px");  // BIGGER
+    document.body.appendChild(spark);
+
+    setTimeout(() => spark.remove(), 1200);
+  }
 }
 
 /* 🎈 Balloons */
@@ -275,8 +264,9 @@ function blowCandles() {
 
   startBalloons();
 
-  for (let i = 0; i < 5; i++) {
-    setTimeout(launchHeartFirework, i * 700);
+  // 🔥 30 heart rockets
+  for (let i = 0; i < 30; i++) {
+    setTimeout(launchHeartFirework, i * 180);
   }
 
   const song = document.getElementById("song");
