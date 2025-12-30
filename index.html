@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy Birthday Palak 🎉</title>
+<title>Happy Birthday Palak ❤️🎆</title>
 
 <style>
 body {
@@ -18,7 +18,7 @@ body {
   display: none;
   font-size: 42px;
   font-weight: bold;
-  background: linear-gradient(90deg, #ff0080, #ffcc00, #ff0080);
+  background: linear-gradient(90deg, #ff0080, #ff5fa2, #ff0080);
   background-size: 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -32,7 +32,7 @@ body {
 }
 @keyframes sparkle {
   0% { text-shadow: 0 0 5px #fff; }
-  50% { text-shadow: 0 0 20px gold; }
+  50% { text-shadow: 0 0 30px hotpink; }
   100% { text-shadow: 0 0 5px #fff; }
 }
 
@@ -75,20 +75,6 @@ body {
   to { transform: scale(1.4); }
 }
 
-/* Fireworks */
-.firework {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  animation: explode 1s forwards;
-  z-index: 1000;
-}
-@keyframes explode {
-  from { transform: scale(1); opacity: 1; }
-  to { transform: scale(20); opacity: 0; }
-}
-
 /* 🎈 Balloons */
 .balloon {
   position: fixed;
@@ -98,7 +84,6 @@ body {
   border-radius: 50%;
   animation: floatUp linear forwards;
   z-index: 500;
-  cursor: pointer;
 }
 .balloon::after {
   content: "";
@@ -117,18 +102,35 @@ body {
   }
 }
 
-/* 💥 Pop particles */
-.pop {
+/* 🚀 Firework rocket */
+.rocket {
+  position: fixed;
+  bottom: -30px;
+  width: 4px;
+  height: 25px;
+  background: white;
+  animation: launch 1.3s linear forwards;
+  z-index: 900;
+}
+@keyframes launch {
+  to {
+    transform: translateY(-60vh);
+    opacity: 0;
+  }
+}
+
+/* ❤️ Heart spark particles */
+.heart-spark {
   position: fixed;
   width: 6px;
   height: 6px;
+  background: hotpink;
   border-radius: 50%;
-  animation: popFly 0.6s forwards;
+  animation: sparkFly 1s ease-out forwards;
   pointer-events: none;
 }
 
-@keyframes popFly {
-  from { transform: scale(1); opacity: 1; }
+@keyframes sparkFly {
   to {
     transform: translate(var(--x), var(--y)) scale(0);
     opacity: 0;
@@ -167,7 +169,7 @@ button {
 
 <div id="countdown"></div>
 
-<div id="banner">🎉🎊 HAPPY BIRTHDAY PALAK 🎊🎉</div>
+<div id="banner">❤️🎉 HAPPY BIRTHDAY PALAK 🎉❤️</div>
 
 <div id="cakeSection" style="display:none;">
   <div class="cake">
@@ -196,7 +198,6 @@ function startCountdown() {
   if (!input) return alert("Select date & time");
 
   const target = new Date(input).getTime();
-
   timer = setInterval(() => {
     const diff = target - Date.now();
     if (diff <= 0) {
@@ -210,67 +211,61 @@ function startCountdown() {
   }, 1000);
 }
 
-/* Fireworks */
-function fireworks() {
-  for (let i = 0; i < 20; i++) {
-    const f = document.createElement("div");
-    f.className = "firework";
-    f.style.left = Math.random() * 100 + "vw";
-    f.style.top = Math.random() * 50 + "vh";
-    f.style.background = `hsl(${Math.random()*360},100%,50%)`;
-    document.body.appendChild(f);
-    setTimeout(() => f.remove(), 1000);
-  }
+/* 🚀 Launch heart firework */
+function launchHeartFirework() {
+  const rocket = document.createElement("div");
+  rocket.className = "rocket";
+  rocket.style.left = Math.random() * 80 + 10 + "vw";
+  document.body.appendChild(rocket);
+
+  setTimeout(() => {
+    const rect = rocket.getBoundingClientRect();
+    rocket.remove();
+    explodeHeart(rect.left, rect.top);
+  }, 1300);
 }
 
-/* 🎈 Multi-row balloons with pop */
+/* ❤️ Heart-shaped explosion */
+function explodeHeart(cx, cy) {
+  const points = [];
+  for (let t = 0; t < Math.PI * 2; t += 0.25) {
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y =
+      -(13 * Math.cos(t) -
+        5 * Math.cos(2 * t) -
+        2 * Math.cos(3 * t) -
+        Math.cos(4 * t));
+    points.push({ x: x * 6, y: y * 6 });
+  }
+
+  points.forEach(p => {
+    const s = document.createElement("div");
+    s.className = "heart-spark";
+    s.style.left = cx + "px";
+    s.style.top = cy + "px";
+    s.style.setProperty("--x", p.x + "px");
+    s.style.setProperty("--y", p.y + "px");
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1000);
+  });
+}
+
+/* 🎈 Balloons */
 function startBalloons() {
-  const colors = [
-    "#ff1744", "#ff1744", "#ff1744",
-    "#ff69b4", "#ff69b4", "#ff69b4",
-    "#ffd700", "#00bfff", "#7c4dff", "#4caf50"
-  ];
-
-  const rows = 5;
-  const perRow = 14;
-  const width = window.innerWidth;
-
-  for (let r = 0; r < rows; r++) {
+  const colors = ["#ff1744","#ff69b4","#ffd700","#00bfff","#7c4dff","#4caf50"];
+  for (let r = 0; r < 5; r++) {
     setTimeout(() => {
-      for (let i = 0; i < perRow; i++) {
+      for (let i = 0; i < 14; i++) {
         const b = document.createElement("div");
         b.className = "balloon";
-        b.style.left = (i / perRow) * width + "px";
-        b.style.background = colors[Math.floor(Math.random() * colors.length)];
-        b.style.animationDuration = (7 + Math.random() * 4) + "s";
-
-        b.onclick = (e) => popBalloon(e, b);
+        b.style.left = (i / 14) * window.innerWidth + "px";
+        b.style.background = colors[Math.floor(Math.random()*colors.length)];
+        b.style.animationDuration = (7 + Math.random()*4) + "s";
         document.body.appendChild(b);
-
         setTimeout(() => b.remove(), 15000);
       }
     }, r * 350);
   }
-}
-
-/* 💥 Balloon pop effect */
-function popBalloon(event, balloon) {
-  const x = event.clientX;
-  const y = event.clientY;
-
-  for (let i = 0; i < 12; i++) {
-    const p = document.createElement("div");
-    p.className = "pop";
-    p.style.left = x + "px";
-    p.style.top = y + "px";
-    p.style.background = balloon.style.background;
-    p.style.setProperty("--x", (Math.random() * 100 - 50) + "px");
-    p.style.setProperty("--y", (Math.random() * 100 - 50) + "px");
-    document.body.appendChild(p);
-    setTimeout(() => p.remove(), 600);
-  }
-
-  balloon.remove();
 }
 
 /* Blow candles */
@@ -278,8 +273,11 @@ function blowCandles() {
   document.querySelectorAll(".flame").forEach(f => f.style.opacity = "0");
   document.getElementById("banner").style.display = "block";
 
-  fireworks();
   startBalloons();
+
+  for (let i = 0; i < 5; i++) {
+    setTimeout(launchHeartFirework, i * 700);
+  }
 
   const song = document.getElementById("song");
   song.currentTime = 0;
