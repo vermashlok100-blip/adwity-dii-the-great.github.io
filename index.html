@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Birthday Surprise 🎉</title>
+<title>Happy Birthday Palak 🎉</title>
 
 <style>
 body {
@@ -10,53 +10,19 @@ body {
   font-family: Arial, sans-serif;
   background: #ffd6e8;
   text-align: center;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-/* Headings */
-h1 {
-  color: #6b003e;
-  margin-top: 20px;
-}
-
-/* Inputs & buttons */
-input, button {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-}
-
-button {
-  background: #ff5fa2;
-  color: white;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-/* Countdown */
-#countdown {
-  font-size: 26px;
-  margin-top: 20px;
-}
-
-/* Cake section */
-#cakeSection {
-  display: none;
-  margin-top: 30px;
-}
-
-/* 🎉 Gradient + Sparkle Banner */
+/* 🎉 GRADIENT + SPARKLE TEXT */
 #banner {
-  display: none;
-  font-size: 40px;
+  margin-top: 40px;
+  font-size: 42px;
   font-weight: bold;
   background: linear-gradient(90deg, #ff0080, #ffcc00, #ff0080);
   background-size: 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientMove 3s infinite linear, sparkle 1.5s infinite;
-  margin-bottom: 20px;
+  animation: gradientMove 3s linear infinite, sparkle 1.5s infinite;
 }
 
 @keyframes gradientMove {
@@ -66,75 +32,18 @@ button {
 
 @keyframes sparkle {
   0% { text-shadow: 0 0 5px #fff; }
-  50% { text-shadow: 0 0 20px #ffd700; }
+  50% { text-shadow: 0 0 20px gold; }
   100% { text-shadow: 0 0 5px #fff; }
 }
 
-/* Stage */
-#stage {
-  position: relative;
-  width: 260px;
-  height: 200px;
-  margin: auto;
-  pointer-events: none;
-}
-
-/* Cake */
-.cake {
-  position: absolute;
-  bottom: 0;
-  width: 220px;
-  left: 20px;
-}
-
-.cake-body {
-  width: 220px;
-  height: 120px;
-  background: #5c2c06;
-  border-radius: 12px;
-}
-
-/* Candles */
-.candle {
-  width: 10px;
-  height: 35px;
-  background: white;
-  position: absolute;
-  top: -35px;
-}
-
-.flame {
-  width: 10px;
-  height: 10px;
-  background: orange;
-  border-radius: 50%;
-  animation: flicker 0.3s infinite alternate;
-}
-
-@keyframes flicker {
-  from { transform: scale(1); }
-  to { transform: scale(1.4); }
-}
-
-/* Character */
-#character {
-  display: none;
-  width: 120px;
-  position: absolute;
-  bottom: 0;
-  left: -140px;
-  transition: left 1s ease;
-}
-
-/* Confetti */
+/* 🎊 CONFETTI */
 .confetti {
   position: fixed;
   width: 8px;
   height: 8px;
-  background: red;
   top: -10px;
-  animation: fall linear infinite;
-  z-index: 999;
+  background: red;
+  animation: fall linear forwards;
 }
 
 @keyframes fall {
@@ -142,42 +51,26 @@ button {
     transform: translateY(110vh) rotate(360deg);
   }
 }
+
+/* 🔊 BUTTON */
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #ff5fa2;
+  color: white;
+  cursor: pointer;
+  margin-top: 30px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>🎀 Birthday Countdown 🎀</h1>
+<div id="banner">🎉🎊 HAPPY BIRTHDAY PALAK 🎊🎉</div>
 
-<!-- 🔊 REQUIRED FOR SOUND -->
 <button onclick="enableSound()">Enable Sound 🔊</button>
-
-<p>Select your birthday:</p>
-<input type="datetime-local" id="bday">
-<br>
-<button onclick="startCountdown()">Start Countdown</button>
-
-<div id="countdown"></div>
-
-<div id="cakeSection">
-
-  <!-- 🎉 FINAL BANNER -->
-  <div id="banner">🎉🎊 HAPPY BIRTHDAY PALAK 🎊🎉</div>
-
-  <div id="stage">
-    <div class="cake">
-      <div class="cake-body"></div>
-      <div class="candle" style="left:40px"><div class="flame"></div></div>
-      <div class="candle" style="left:80px"><div class="flame"></div></div>
-      <div class="candle" style="left:120px"><div class="flame"></div></div>
-      <div class="candle" style="left:160px"><div class="flame"></div></div>
-    </div>
-
-    <img id="character" src="character.png">
-  </div>
-
-  <button onclick="blowCandles()">Blow Candles 💨</button>
-</div>
 
 <audio id="song">
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
@@ -185,70 +78,32 @@ button {
 
 <script>
 let soundEnabled = false;
-let timer;
 
-/* Enable sound (browser unlock) */
+/* 🔊 SOUND (100% browser-safe) */
 function enableSound() {
   const song = document.getElementById("song");
   song.play().then(() => {
     song.pause();
     song.currentTime = 0;
     soundEnabled = true;
-    alert("Sound enabled 🎶");
+    song.play(); // play again for celebration
+    startConfetti();
+  }).catch(() => {
+    alert("Tap once again to allow sound 🔊");
   });
 }
 
-/* Countdown */
-function startCountdown() {
-  const input = document.getElementById("bday").value;
-  if (!input) return alert("Select date & time");
-
-  const target = new Date(input).getTime();
-
-  timer = setInterval(() => {
-    const diff = target - Date.now();
-    if (diff <= 0) {
-      clearInterval(timer);
-      document.getElementById("countdown").innerHTML = "🎂 IT'S TIME! 🎂";
-      document.getElementById("cakeSection").style.display = "block";
-    } else {
-      document.getElementById("countdown").innerHTML =
-        Math.floor(diff / 1000) + " seconds";
-    }
-  }, 1000);
-}
-
-/* 🎉 Confetti rain */
+/* 🎊 CONFETTI RAIN */
 function startConfetti() {
-  for (let i = 0; i < 120; i++) {
+  setInterval(() => {
     const c = document.createElement("div");
     c.className = "confetti";
     c.style.left = Math.random() * 100 + "vw";
     c.style.background = `hsl(${Math.random()*360},100%,50%)`;
-    c.style.animationDuration = 2 + Math.random() * 3 + "s";
+    c.style.animationDuration = (2 + Math.random()*3) + "s";
     document.body.appendChild(c);
     setTimeout(() => c.remove(), 5000);
-  }
-}
-
-/* Blow candles */
-function blowCandles() {
-  if (!soundEnabled) {
-    alert("Click Enable Sound 🔊 first");
-    return;
-  }
-
-  document.getElementById("song").play();
-
-  const char = document.getElementById("character");
-  char.style.display = "block";
-  char.style.left = "20px";
-
-  setTimeout(() => {
-    document.querySelectorAll(".flame").forEach(f => f.style.opacity = 0);
-    document.getElementById("banner").style.display = "block";
-    startConfetti();
-  }, 800);
+  }, 150);
 }
 </script>
 
