@@ -276,8 +276,8 @@ function explodeFinalHeart() {
     s.style.left = cx + "px";
     s.style.top = cy + "px";
     s.style.background = "deeppink";
-    s.style.setProperty("--x", x * 32 + "px");  // 3× BIGGER
-    s.style.setProperty("--y", y * 32 + "px");  // 3× BIGGER
+    s.style.setProperty("--x", x * 60 + "px");  // 3× BIGGER
+    s.style.setProperty("--y", y * 60 + "px");  // 3× BIGGER
     document.body.appendChild(s);
     setTimeout(() => s.remove(), 2200);
   }
@@ -306,3 +306,4 @@ function blowCandles() {
 
 </body>
 </html>
+
