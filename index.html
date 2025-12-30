@@ -12,13 +12,11 @@ body {
   text-align: center;
 }
 
-/* Heading */
 h1 {
   color: #6b003e;
   margin-top: 20px;
 }
 
-/* Inputs & buttons */
 input, button {
   padding: 10px;
   font-size: 16px;
@@ -33,20 +31,17 @@ button {
   margin-top: 10px;
 }
 
-/* Countdown */
 #countdown {
   font-size: 26px;
   margin-top: 20px;
 }
 
-/* Cake section */
 #cakeSection {
   display: none;
   margin-top: 40px;
   position: relative;
 }
 
-/* Banner */
 #banner {
   display: none;
   font-size: 32px;
@@ -54,16 +49,15 @@ button {
   margin-bottom: 20px;
 }
 
-/* Stage (visual only, no clicks) */
+/* Stage (visual only) */
 #stage {
   position: relative;
   width: 260px;
   height: 200px;
   margin: auto;
-  pointer-events: none; /* 👈 VERY IMPORTANT */
+  pointer-events: none;
 }
 
-/* Cake */
 .cake {
   position: absolute;
   bottom: 0;
@@ -78,7 +72,6 @@ button {
   border-radius: 12px;
 }
 
-/* Candles */
 .candle {
   width: 10px;
   height: 35px;
@@ -98,10 +91,9 @@ button {
 
 @keyframes flicker {
   from { transform: scale(1); }
-  to   { transform: scale(1.4); }
+  to { transform: scale(1.4); }
 }
 
-/* Character */
 #character {
   display: none;
   width: 120px;
@@ -111,12 +103,10 @@ button {
   transition: left 1s ease;
 }
 
-/* Blow button (FORCE CLICKABLE) */
 #blowBtn {
   position: relative;
   z-index: 50;
   cursor: pointer;
-  pointer-events: auto;
 }
 </style>
 </head>
@@ -134,11 +124,10 @@ button {
 
 <div id="cakeSection">
 
-  <div id="banner">🎉 HAPPY BIRTHDAY 🎉</div>
+  <div id="banner">🎉🎉🎉 HAPPY BIRTHDAY PALAK🎉🎉 🎉</div>
+  
 
   <div id="stage">
-
-    <!-- Cake -->
     <div class="cake">
       <div class="cake-body"></div>
       <div class="candle" style="left:40px"><div class="flame"></div></div>
@@ -147,15 +136,14 @@ button {
       <div class="candle" style="left:160px"><div class="flame"></div></div>
     </div>
 
-    <!-- Character -->
     <img id="character" src="character.png" alt="character">
   </div>
 
-  <!-- CLICKABLE BUTTON -->
+  <!-- IMPORTANT: USER CLICK -->
   <button id="blowBtn" onclick="blowCandles()">Blow Candles 💨</button>
 </div>
 
-<!-- Birthday song -->
+<!-- SONG (VALID LINK) -->
 <audio id="song" preload="auto">
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c9e2f5bde.mp3" type="audio/mpeg">
 </audio>
@@ -192,6 +180,14 @@ function startCountdown() {
 }
 
 function blowCandles() {
+  /* 🔊 PLAY SOUND IMMEDIATELY ON CLICK */
+  const song = document.getElementById("song");
+  song.currentTime = 0;
+  song.play().catch(() => {
+    alert("Please tap once anywhere to enable sound 🔊");
+  });
+
+  /* animation after */
   const char = document.getElementById("character");
   char.style.display = "block";
   char.offsetHeight;
@@ -204,13 +200,7 @@ function blowCandles() {
     });
 
     document.getElementById("banner").style.display = "block";
-
-    const song = document.getElementById("song");
-    song.currentTime = 0;
-    song.play().catch(() => {
-      alert("Click once anywhere to enable sound 🔊");
-    });
-  }, 1000);
+  }, 800);
 }
 </script>
 
