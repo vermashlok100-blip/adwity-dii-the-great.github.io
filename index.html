@@ -48,7 +48,6 @@ body {
   width: 220px;
   margin: 30px auto;
 }
-
 .cake-body {
   width: 220px;
   height: 120px;
@@ -99,6 +98,7 @@ body {
   border-radius: 50%;
   animation: floatUp linear forwards;
   z-index: 500;
+  cursor: pointer;
 }
 .balloon::after {
   content: "";
@@ -113,6 +113,24 @@ body {
 @keyframes floatUp {
   to {
     transform: translateY(-140vh);
+    opacity: 0;
+  }
+}
+
+/* 💥 Pop particles */
+.pop {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: popFly 0.6s forwards;
+  pointer-events: none;
+}
+
+@keyframes popFly {
+  from { transform: scale(1); opacity: 1; }
+  to {
+    transform: translate(var(--x), var(--y)) scale(0);
     opacity: 0;
   }
 }
@@ -205,33 +223,57 @@ function fireworks() {
   }
 }
 
-/* 🎈 MULTI-ROW BALLOONS (RED & PINK DOMINANT) */
+/* 🎈 Multi-row balloons with pop */
 function startBalloons() {
   const colors = [
-    "#ff1744", "#ff1744", "#ff1744",   // red (more)
-    "#ff69b4", "#ff69b4", "#ff69b4",   // pink (more)
-    "#ffd700", "#00bfff", "#7c4dff", "#4caf50", "#ff9800"
+    "#ff1744", "#ff1744", "#ff1744",
+    "#ff69b4", "#ff69b4", "#ff69b4",
+    "#ffd700", "#00bfff", "#7c4dff", "#4caf50"
   ];
 
   const rows = 5;
-  const balloonsPerRow = 14;
-  const screenWidth = window.innerWidth;
+  const perRow = 14;
+  const width = window.innerWidth;
 
-  for (let row = 0; row < rows; row++) {
+  for (let r = 0; r < rows; r++) {
     setTimeout(() => {
-      for (let i = 0; i < balloonsPerRow; i++) {
+      for (let i = 0; i < perRow; i++) {
         const b = document.createElement("div");
         b.className = "balloon";
-        b.style.left = (i / balloonsPerRow) * screenWidth + "px";
+        b.style.left = (i / perRow) * width + "px";
         b.style.background = colors[Math.floor(Math.random() * colors.length)];
         b.style.animationDuration = (7 + Math.random() * 4) + "s";
+
+        b.onclick = (e) => popBalloon(e, b);
         document.body.appendChild(b);
+
         setTimeout(() => b.remove(), 15000);
       }
-    }, row * 350);
+    }, r * 350);
   }
 }
 
+/* 💥 Balloon pop effect */
+function popBalloon(event, balloon) {
+  const x = event.clientX;
+  const y = event.clientY;
+
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement("div");
+    p.className = "pop";
+    p.style.left = x + "px";
+    p.style.top = y + "px";
+    p.style.background = balloon.style.background;
+    p.style.setProperty("--x", (Math.random() * 100 - 50) + "px");
+    p.style.setProperty("--y", (Math.random() * 100 - 50) + "px");
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 600);
+  }
+
+  balloon.remove();
+}
+
+/* Blow candles */
 function blowCandles() {
   document.querySelectorAll(".flame").forEach(f => f.style.opacity = "0");
   document.getElementById("banner").style.display = "block";
