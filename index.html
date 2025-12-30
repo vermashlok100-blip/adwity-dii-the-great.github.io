@@ -13,7 +13,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Speaker icon */
+/* 🔊 Speaker Icon */
 #speaker {
   position: fixed;
   top: 15px;
@@ -21,13 +21,10 @@ body {
   font-size: 28px;
   cursor: pointer;
   user-select: none;
-  transition: color 0.3s;
+  color: red; /* OFF by default */
 }
 
-#speaker.off { color: red; }
-#speaker.on  { color: green; }
-
-/* Banner */
+/* 🎉 Banner */
 #banner {
   display: none;
   font-size: 42px;
@@ -128,8 +125,8 @@ button {
 
 <body>
 
-<!-- 🔊 Speaker Icon -->
-<div id="speaker" class="off" onclick="toggleSound()">🔊</div>
+<!-- 🔊 Speaker -->
+<div id="speaker" onclick="toggleSound()">🔊</div>
 
 <h1>🎀 Birthday Countdown 🎀</h1>
 
@@ -163,17 +160,19 @@ let soundOn = false;
 let timer;
 
 function toggleSound() {
+  soundOn = !soundOn;
+
   const speaker = document.getElementById("speaker");
   const song = document.getElementById("song");
 
-  soundOn = !soundOn;
+  /* VISUAL STATE FIRST (NO DEPENDENCY) */
+  speaker.style.color = soundOn ? "green" : "red";
 
+  /* TRY TO PLAY — IF BLOCKED, IGNORE */
   if (soundOn) {
-    speaker.className = "on";
     song.currentTime = 0;
-    song.play(); // valid user gesture
+    song.play().catch(() => {});
   } else {
-    speaker.className = "off";
     song.pause();
   }
 }
@@ -217,7 +216,7 @@ function blowCandles() {
   if (soundOn) {
     const song = document.getElementById("song");
     song.currentTime = 0;
-    song.play();
+    song.play().catch(() => {});
   }
 }
 </script>
